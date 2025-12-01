@@ -23,15 +23,30 @@ int main(int argc, char** argv)
     // Otherwise I'd have to check but I think this would be a for_each, or I probably could have made it a fold
     int count = 0;
     int pos = 50;
+    int delta;
     for (std::string buffer; std::getline(fs, buffer);)
     {
         // I'm expecting good data in this coding challenge
-        if (buffer[0] == 'L')   pos -= std::stoi(buffer.substr(1));
-        else                    pos += std::stoi(buffer.substr(1));
+        delta = std::stoi(buffer.substr(1));
 
-        pos %= 100;
-        if (pos < 0) pos += 100;
-        if (pos > 99) pos -= 100;
+        // deal with additional rotations
+        count += delta / 100;
+        delta %= 100;
+
+        if (buffer[0] == 'L') delta *= -1;
+
+        if (pos == 0)
+        {
+            pos += delta;
+            if (pos < 0) pos += 100;
+        }
+        else
+        {
+            pos += delta;
+            if (pos < 0)    { count++; pos += 100; }
+            if (pos == 100) pos = 0;
+            if (pos > 100)  { count++; pos -= 100; }
+        }
 
         if (pos == 0) count++;
 
