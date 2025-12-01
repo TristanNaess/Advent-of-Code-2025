@@ -1,5 +1,8 @@
 part1: part1.cpp
 	g++ part1.cpp -o main
 
+part2.cpp: part1.cpp
+	cp part1.cpp part2.cpp
+
 part2: part2.cpp
 	g++ part2.cpp -o main
